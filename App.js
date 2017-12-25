@@ -12,7 +12,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://api.coinmarketcap.com/v1/ticker/?limit=10')
+    fetch('https://api.coinmarketcap.com/v1/ticker/?limit=5')
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
