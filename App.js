@@ -12,7 +12,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://api.coinmarketcap.com/v1/ticker/?limit=5')
+    fetch('https://api.coinmarketcap.com/v1/ticker/?limit=10')
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
@@ -27,7 +27,7 @@ export default class App extends React.Component {
   render() {
     tmp = this.state.data;
     return (
-      <View>
+      <View style={{flex: 1}}>
         <View>
           <Text></Text>
           <Text/>
