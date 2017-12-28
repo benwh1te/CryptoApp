@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListView, StyleSheet, Text, View, ScrollView, StatusBar } from 'react-native';
+import { RefreshControl, ListView, StyleSheet, Text, View, ScrollView, StatusBar } from 'react-native';
 import Currency from './Currency.js'
 
 
@@ -7,11 +7,13 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      refreshing: false
     };
   }
 
-  componentDidMount() {
+
+  fetchData() {
     fetch('https://api.coinmarketcap.com/v1/ticker/?limit=10')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -24,7 +26,14 @@ export default class App extends React.Component {
       });
   }
 
+  onRefresh() {
+    this.setState({data: this.state.data, refreshing: true});
+    this.fetchData();
+    this.setState({data: this.state.data, refreshing: false});
+  }
+
   render() {
+    this.fetchData();
     tmp = this.state.data;
     return (
       <View style={{flex: 1}}>
@@ -33,7 +42,7 @@ export default class App extends React.Component {
           <Text/>
           <Text style={{fontFamily: 'Avenir', textAlign: 'center', height: 30, fontSize: 20, fontWeight: 'bold'}}>CryptoCurrency Application</Text>
         </View>
-        <ScrollView>
+        <ScrollView refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh.bind(this)} />}>
           {tmp.map(function(current, index) {
             return <Currency key={index} data={current}/>
           })}
